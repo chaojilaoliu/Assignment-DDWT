@@ -1,0 +1,99 @@
+﻿@using WebMatrix.Data
+
+@{
+    var db = Database.Open("FoodDB");
+    var sql = @"select * from  orders as o join stores as s on o.store_id = s.store_id join hubs as h on s.hub_id = h.hub_id  ORDER BY h.hub_id, o.order_id";
+    if (IsPost && Request.Form["delete"] != null)
+
+    {
+
+        var deleteQueryString = "Delete FROM orders as o join stores as s on o.store_id = s.store_id join hubs as h on s.hub_id = h.hub_id  ORDER BY h.hub_id, o.order_id WHERE hub_id = @0";
+
+        //db.QuerySingle(deleteQueryString, Request.Form["delete"]);
+
+        try
+
+        {
+
+            db.QuerySingle(deleteQueryString, Request.Form["delete"]);
+
+            <div>successful</div>
+
+        }
+
+        catch
+
+        {
+
+            <div>Fail</div> ;
+
+        }
+
+    }
+
+    var output = db.Query(sql);
+}
+
+
+
+
+<table class="table">
+    <thead class="table table-striped">
+        <tr>
+            <th>Action</th>
+            <th>Hub Name</th>
+            <th>Hub Id</th>
+            <th>Order ID</th>
+            <th>Order Status</th>
+            <th>Order Amount</th>
+            @*<th>order delivery fee</th>
+                <th>order delivery cost</th>
+                <th>order moment created</th>
+                <th>order moment accepted</th>
+                <th>order moment ready</th>
+                <th>order moment collected</th>
+                <th>order moment in expedition</th>
+                <th>order moment delivering</th>
+                <th>order moment delivered</th>
+                <th>order moment finished</th>
+                <th>order metric collected time</th>
+                <th>order metric paused time</th>
+                <th>order metric production time</th>
+                <th>order metric walking time</th>
+                <th>order metric expediton speed time</th>
+                <th>order metric transit time</th>
+                <th>order metric cycle time</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in output@*hubOrders*@)
+{
+<tr>
+    <td><button type="submit" name="delete" class="btn btn-outline-danger" value="@order.hub_id">Delete</button></td>
+    <td>@order.hub_name</td>
+    <td>@order.hub_id</td>
+    <td>@order.order_id</td>
+    <td>@order.order_status</td>
+    <td>@order.order_amount.ToString("C")</td>
+    @*<td>@order.order_delivery_fee</td>
+        <td>@order.order_delivery_cost</td>
+        <td>@order.order_moment_created</td>
+        <td>@order.order_moment_accepted</td>
+        <td>@order.order_moment_ready</td>
+        <td>@order.order_moment_collected</td>
+        <td>@order.order_moment_in_expedition</td>
+        <td>@order.order_moment_delivering</td>
+        <td>@order.order_moment_delivered</td>
+        <td>@order.order_moment_finished</td>
+        <td>@order.order_metric_collected_time</td>
+        <td>@order.order_metric_paused_time</td>
+        <td>@order.order_metric_production_time</td>
+        <td>@order.order_metric_walking_time</td>
+        <td>@order.order_metric_expediton_speed_time</td>
+        <td>@order.order_metric_transit_time</td>
+        <td>@order.order_metric_cycle_time</td>*@
+
+</tr>
+}
+    </tbody>
+</table>
