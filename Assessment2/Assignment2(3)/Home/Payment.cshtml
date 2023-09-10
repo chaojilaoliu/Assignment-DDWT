@@ -1,0 +1,71 @@
+﻿@using WebMatrix.Data
+
+@{
+    var id = Request.QueryString["id"];
+    var db = Database.Open("FoodDB");
+
+
+    var sql = "SELECT * FROM stores as" +
+                " s join orders as o on s.store_id = o.store_id " +
+                "join payments as p on o.order_id = p.payment_order_id " +
+                "join channels as c on c.channel_id = o.channel_id where order_id = @0";
+
+    var order = db.QuerySingle(sql, id);
+}
+<div class="jumbotron pt-1 pb-1 mt-2">
+    <h2 class="text-center">Orders Detial</h2>
+</div>
+@if (order != null)
+{
+    <button type="submit" name="delete" class="btn btn-outline-danger" value="@order.order_id">Delete</button>
+    <div class="row justify-content-center ">
+        <div class="col-8">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">@order.order_id</h5>
+                    <p>Store ID: @order.store_id</p>
+                    <p>Channel ID: @order.channel_id</p>
+                    <p>Payment ID:@order.payment_id</p>
+                    <p>Order Status: @order.order_status</p>
+                    <p>order amount:@order.order_amount</p>
+                    <p>Payment amount:@order.payment_amount </p>
+                    <p>Payment fee:@order.payment_fee</p>
+                    <p>Payment method:@order.payment_method</p>
+                    <p>Patment status:@order.payment_status</p>
+                    <p>Channel name:@order.channel_name</p>
+                    <p>Channle type:@order.channel_type</p>
+                    <p>Store name:@order.store_name</p>
+                    <p>Store segments:@order.store_segment</p>
+                    <p>Store plan price:@order.store_plan_price</p>
+                    <p>Store latitude:@order.store_latitude</p>
+                    <p>Store longitude:@order.store_longitude</p>
+                    <p>order delivery fee:@order.order_delivery_fee</p>
+                        <p>order delivery cost:@order.order_delivery_cost</p>
+                        <p>order moment created:@order.order_moment_created</p>
+                        <p>order moment accepted:@order.order_moment_accepted</p>
+                        <p>order moment ready:@order.order_moment_ready</p>
+                        <p>order moment collected:@order.order_moment_collected</p>
+                        <p>order moment in expedition:@order.order_moment_in_expedition</p>
+                        <p>order moment delivering:@order.order_moment_delivering</p>
+                        <p>order moment delivered:@order.order_moment_delivered</p>
+                        <p>order moment finished:@order.order_moment_finished</p>
+                        <p>order metric collected time:@order.order_metric_collected_time</p>
+                        <p>order metric paused time:@order.order_metric_paused_time</p>
+                        <p>order metric production time:@order.order_metric_production_time</p>
+                        <p>order metric walking time:@order.order_metric_walking_time</p>
+                        <p>order metric expediton speed time:@order.order_metric_expediton_speed_time</p>
+                        <p>order metric transit time:@order.order_metric_transit_time</p>
+                        <p>order metric cycle time:@order.order_metric_cycle_time</p>
+                        <p>Driver ID: @order.driver_id</p>
+                        <p>Driver Modal: @order.driver_modal</p>
+                        <p>Driver Type: @order.driver_type</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h2 class="card=text-center text-danger">Ooops - That payment information was not found!</h2>
+}
